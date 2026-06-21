@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OpenClaw Kanban Board</title>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', system-ui, sans-serif; }
@@ -17,10 +14,18 @@
     </style>
 </head>
 <body>
-    <div id="root"></div>
-    <script type="text/babel">
-        const { useState } = React;
+    <div id="app" class="p-8 max-w-7xl mx-auto">
+        <header class="mb-8 flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-white">OpenClaw Kanban</h1>
+            <div id="member-avatars" class="flex -space-x-2"></div>
+        </header>
 
+        <div id="board" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Columns rendered by JS -->
+        </div>
+    </div>
+
+    <script>
         const INITIAL_MEMBERS = [
             { id: 1, name: 'Yatharth', avatar: 'https://i.pravatar.cc/150?u=1' },
             { id: 2, name: 'Alex', avatar: 'https://i.pravatar.cc/150?u=2' },
@@ -34,7 +39,7 @@
             'Other': 'bg-slate-500 text-slate-100'
         };
 
-        const INITIAL_TASKS = [
+        let tasks = [
             { id: 't1', title: 'Setup Project Structure', desc: 'Define folder hierarchy and config', status: 'done', dueDate: '2026-06-01', memberId: 1, tag: 'Feature' },
             { id: 't2', title: 'Build API Endpoints', desc: 'Implement CRUD for tasks', status: 'doing', dueDate: '2026-06-25', memberId: 2, tag: 'Feature' },
             { id: 't3', title: 'Kanban UI Implementation', desc: 'React frontend for board', status: 'todo', dueDate: '2026-06-22', memberId: 3, tag: 'Design' },
@@ -47,89 +52,76 @@
             { id: 'done', title: 'Done', color: 'bg-green-500' },
         ];
 
-        const KanbanBoard = () => {
-            const [tasks, setTasks] = useState(INITIAL_TASKS);
+        function isOverdue(date) {
+            return new Date(date) < new Date();
+        }
 
-            const moveTask = (taskId) => {
-                setTasks(prev => prev.map(task => {
-                    if (task.id === taskId) {
-                        const nextStatus = { todo: 'doing', doing: 'done', done: 'todo' }[task.status];
-                        return { ...task, status: nextStatus };
-                    }
-                    return task;
-                }));
-            };
+        function moveTask(taskId) {
+            tasks = tasks.map(task => {
+                if (task.id === taskId) {
+                    const nextStatus = { todo: 'doing', doing: 'done', done: 'todo' }[task.status];
+                    return { ...task, status: nextStatus };
+                }
+                return task;
+            });
+            render();
+        }
 
-            const isOverdue = (date) => {
-                return new Date(date) < new Date() && date !== 'done';
-            };
+        function render() {
+            // Render Members
+            const memberContainer = document.getElementById('member-avatars');
+            memberContainer.innerHTML = INITIAL_MEMBERS.map(m => 
+                `<img src="${m.avatar}" title="${m.name}" class="w-8 h-8 rounded-full border-2 border-slate-800" />`
+            ).join('');
 
-            return (
-                <div className="p-8 max-w-7xl mx-auto">
-                    <header className="mb-8 flex justify-between items-center">
-                        <h1 className="text-3xl font-bold text-white">OpenClaw Kanban</h1>
-                        <div className="flex -space-x-2">
-                            {INITIAL_MEMBERS.map(m => (
-                                <img key={m.id} src={m.avatar} title={m.name} className="w-8 h-8 rounded-full border-2 border-slate-800" />
-                            ))}
+            // Render Board
+            const board = document.getElementById('board');
+            board.innerHTML = COLUMNS.map(col => {
+                const colTasks = tasks.filter(t => t.status === col.id);
+                return `
+                    <div class="kanban-column p-4 flex flex-col">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-3 h-3 rounded-full ${col.color}"></div>
+                            <h2 class="text-lg font-semibold text-slate-300">${col.title}</h2>
+                            <span class="ml-auto text-sm text-slate-500">${colTasks.length}</span>
                         </div>
-                    </header>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {COLUMNS.map(col => (
-                            <div key={col.id} className="kanban-column p-4 flex flex-col">
-                                <div className="flex items-center gap-2 mb-4">
-                                    <div className={`w-3 h-3 rounded-full ${col.color}`}></div>
-                                    <h2 className="text-lg font-semibold text-slate-300">{col.title}</h2>
-                                    <span className="ml-auto text-sm text-slate-500">{tasks.filter(t => t.status === col.id).length}</span>
-                                </div>
-
-                                <div className="space-y-3 flex-1">
-                                    {tasks.filter(t => t.status === col.id).map(task => {
-                                        const member = INITIAL_MEMBERS.find(m => m.id === task.memberId);
-                                        const overdue = isOverdue(task.dueDate) && task.status !== 'done';
-                                        const tagColor = TAG_COLORS[task.tag] || TAG_COLORS['Other'];
-                                        
-                                        return (
-                                            <div 
-                                                key={task.id} 
-                                                onClick={() => moveTask(task.id)}
-                                                className="card p-4 rounded-lg shadow-sm border border-slate-700 group relative"
-                                            >
-                                                <div className="flex justify-between items-start mb-2">
-                                                    <div className="flex flex-col gap-2">
-                                                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase w-fit ${tagColor}`}>
-                                                            {task.tag}
-                                                        </span>
-                                                        <h3 className="font-medium text-slate-100">{task.title}</h3>
-                                                    </div>
-                                                    {overdue && (
-                                                        <span className="overdue-badge px-2 py-0.5 rounded-full text-[10px] font-bold uppercase">Overdue</span>
-                                                    )}
-                                                </div>
-                                                <p className="text-sm text-slate-400 mb-4">{task.desc}</p>
-                                                <div className="flex justify-between items-center">
-                                                    <span className="text-xs text-slate-500">{task.dueDate}</span>
-                                                    <img src={member?.avatar} className="w-6 h-6 rounded-full" />
-                                                </div>
-                                                <div className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity text-slate-500">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                                    </svg>
-                                                </div>
+                        <div class="space-y-3 flex-1">
+                            ${colTasks.map(task => {
+                                const member = INITIAL_MEMBERS.find(m => m.id === task.memberId);
+                                const overdue = isOverdue(task.dueDate) && task.status !== 'done';
+                                const tagColor = TAG_COLORS[task.tag] || TAG_COLORS['Other'];
+                                return `
+                                    <div onclick="moveTask('${task.id}')" class="card p-4 rounded-lg shadow-sm border border-slate-700 group relative">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div class="flex flex-col gap-2">
+                                                <span class="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase w-fit ${tagColor}">
+                                                    ${task.tag}
+                                                </span>
+                                                <h3 class="font-medium text-slate-100">${task.title}</h3>
                                             </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        ))}
+                                            ${overdue ? `<span class="overdue-badge px-2 py-0.5 rounded-full text-[10px] font-bold uppercase">Overdue</span>` : ''}
+                                        </div>
+                                        <p class="text-sm text-slate-400 mb-4">${task.desc}</p>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-slate-500">${task.dueDate}</span>
+                                            <img src="${member?.avatar}" class="w-6 h-6 rounded-full" />
+                                        </div>
+                                        <div class="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity text-slate-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
                     </div>
-                </div>
-            );
-        };
+                `;
+            }).join('');
+        }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<KanbanBoard />);
+        // Initial render
+        render();
     </script>
 </body>
 </html>
