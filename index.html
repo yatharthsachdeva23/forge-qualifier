@@ -27,11 +27,18 @@
             { id: 3, name: 'Jordan', avatar: 'https://i.pravatar.cc/150?u=3' },
         ];
 
+        const TAG_COLORS = {
+            'Bug': 'bg-red-500 text-red-100',
+            'Design': 'bg-purple-500 text-purple-100',
+            'Feature': 'bg-green-500 text-green-100',
+            'Other': 'bg-slate-500 text-slate-100'
+        };
+
         const INITIAL_TASKS = [
-            { id: 't1', title: 'Setup Project Structure', desc: 'Define folder hierarchy and config', status: 'done', dueDate: '2026-06-01', memberId: 1 },
-            { id: 't2', title: 'Build API Endpoints', desc: 'Implement CRUD for tasks', status: 'doing', dueDate: '2026-06-25', memberId: 2 },
-            { id: 't3', title: 'Kanban UI Implementation', desc: 'React frontend for board', status: 'todo', dueDate: '2026-06-22', memberId: 3 },
-            { id: 't4', title: 'Fix Auth Bug', desc: 'Token expiration issue', status: 'todo', dueDate: '2026-06-10', memberId: 1 },
+            { id: 't1', title: 'Setup Project Structure', desc: 'Define folder hierarchy and config', status: 'done', dueDate: '2026-06-01', memberId: 1, tag: 'Feature' },
+            { id: 't2', title: 'Build API Endpoints', desc: 'Implement CRUD for tasks', status: 'doing', dueDate: '2026-06-25', memberId: 2, tag: 'Feature' },
+            { id: 't3', title: 'Kanban UI Implementation', desc: 'React frontend for board', status: 'todo', dueDate: '2026-06-22', memberId: 3, tag: 'Design' },
+            { id: 't4', title: 'Fix Auth Bug', desc: 'Token expiration issue', status: 'todo', dueDate: '2026-06-10', memberId: 1, tag: 'Bug' },
         ];
 
         const COLUMNS = [
@@ -81,6 +88,7 @@
                                     {tasks.filter(t => t.status === col.id).map(task => {
                                         const member = INITIAL_MEMBERS.find(m => m.id === task.memberId);
                                         const overdue = isOverdue(task.dueDate) && task.status !== 'done';
+                                        const tagColor = TAG_COLORS[task.tag] || TAG_COLORS['Other'];
                                         
                                         return (
                                             <div 
@@ -89,7 +97,12 @@
                                                 className="card p-4 rounded-lg shadow-sm border border-slate-700 group relative"
                                             >
                                                 <div className="flex justify-between items-start mb-2">
-                                                    <h3 className="font-medium text-slate-100">{task.title}</h3>
+                                                    <div className="flex flex-col gap-2">
+                                                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase w-fit ${tagColor}`}>
+                                                            {task.tag}
+                                                        </span>
+                                                        <h3 className="font-medium text-slate-100">{task.title}</h3>
+                                                    </div>
                                                     {overdue && (
                                                         <span className="overdue-badge px-2 py-0.5 rounded-full text-[10px] font-bold uppercase">Overdue</span>
                                                     )}
