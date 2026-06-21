@@ -3,112 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forge Sprint - AI Web Scraper Dashboard</title>
+    <title>OpenClaw Kanban Board</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: radial-gradient(circle at 50% 50%, #111827 0%, #030712 100%);
-        }
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px);
-            border: 1px rgba(255, 255, 255, 0.08) solid;
-        }
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', system-ui, sans-serif; }
+        .kanban-column { background-color: #1e293b; min-height: 80vh; border-radius: 12px; }
+        .card { background-color: #334155; transition: transform 0.1s ease, background-color 0.2s ease; cursor: pointer; }
+        .card:hover { background-color: #475569; transform: translateY(-2px); }
+        .overdue-badge { background-color: #ef4444; color: white; font-size: 0.7rem; }
     </style>
 </head>
-<body class="min-h-screen text-slate-100 p-6 md:p-12 flex flex-col justify-between">
-    <header class="max-w-6xl mx-auto w-full mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-            <span class="text-xs uppercase tracking-widest text-emerald-400 font-bold">Forge Qualifier E2E Loop</span>
-            <h1 class="text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-                Scraper Dashboard
-            </h1>
-        </div>
-        <div class="glass px-4 py-2 rounded-full text-xs font-semibold text-emerald-300 flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            System Live & Connected
-        </div>
-    </header>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState } = React;
 
-    <main class="max-w-6xl mx-auto w-full flex-grow">
-        <section id="stats-section" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <!-- Stats will load here -->
-        </section>
+        const INITIAL_MEMBERS = [
+            { id: 1, name: 'Yatharth', avatar: 'https://i.pravatar.cc/150?u=1' },
+            { id: 2, name: 'Alex', avatar: 'https://i.pravatar.cc/150?u=2' },
+            { id: 3, name: 'Jordan', avatar: 'https://i.pravatar.cc/150?u=3' },
+        ];
 
-        <section id="results-section" class="grid grid-cols-1 gap-8">
-            <div class="glass p-8 rounded-2xl animate-pulse text-center text-slate-400">
-                Loading Scrape Results...
-            </div>
-        </section>
-    </main>
+        const INITIAL_TASKS = [
+            { id: 't1', title: 'Setup Project Structure', desc: 'Define folder hierarchy and config', status: 'done', dueDate: '2026-06-01', memberId: 1 },
+            { id: 't2', title: 'Build API Endpoints', desc: 'Implement CRUD for tasks', status: 'doing', dueDate: '2026-06-25', memberId: 2 },
+            { id: 't3', title: 'Kanban UI Implementation', desc: 'React frontend for board', status: 'todo', dueDate: '2026-06-22', memberId: 3 },
+            { id: 't4', title: 'Fix Auth Bug', desc: 'Token expiration issue', status: 'todo', dueDate: '2026-06-10', memberId: 1 },
+        ];
 
-    <footer class="max-w-6xl mx-auto w-full text-center mt-12 text-xs text-slate-500 border-t border-slate-800 pt-6">
-        Forge Qualifier Submission &middot; Designed by Yatharth Sachdeva
-    </footer>
+        const COLUMNS = [
+            { id: 'todo', title: 'To-Do', color: 'bg-blue-500' },
+            { id: 'doing', title: 'Doing', color: 'bg-yellow-500' },
+            { id: 'done', title: 'Done', color: 'bg-green-500' },
+        ];
 
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                const response = await fetch('./scrape_results.json');
-                const data = await response.json();
-                
-                // Load stats
-                const statsSection = document.getElementById('stats-section');
-                statsSection.innerHTML = `
-                    <div class="glass p-6 rounded-2xl">
-                        <p class="text-slate-400 text-sm">Target Domains</p>
-                        <p class="text-3xl font-extrabold text-white mt-1">${data.length}</p>
-                    </div>
-                    <div class="glass p-6 rounded-2xl">
-                        <p class="text-slate-400 text-sm">Total Headings Captured</p>
-                        <p class="text-3xl font-extrabold text-indigo-400 mt-1">
-                            ${data.reduce((acc, curr) => acc + (curr.headings ? curr.headings.length : 0), 0)}
-                        </p>
-                    </div>
-                    <div class="glass p-6 rounded-2xl">
-                        <p class="text-slate-400 text-sm">Status</p>
-                        <p class="text-3xl font-extrabold text-emerald-400 mt-1">Ready</p>
-                    </div>
-                `;
+        const KanbanBoard = () => {
+            const [tasks, setTasks] = useState(INITIAL_TASKS);
 
-                // Load results
-                const resultsSection = document.getElementById('results-section');
-                resultsSection.innerHTML = data.map((site, index) => {
-                    const headingsHtml = site.headings && site.headings.length > 0
-                        ? site.headings.map(h => `
-                            <div class="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-lg text-sm">
-                                <span class="text-xs uppercase bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded font-bold">${h.tag}</span>
-                                <span class="text-slate-300">${h.text}</span>
-                            </div>
-                        `).join('')
-                        : `<p class="text-sm text-slate-500 italic">No headings/H1-H6 tags found on this page layout.</p>`;
+            const moveTask = (taskId) => {
+                setTasks(prev => prev.map(task => {
+                    if (task.id === taskId) {
+                        const nextStatus = { todo: 'doing', doing: 'done', done: 'todo' }[task.status];
+                        return { ...task, status: nextStatus };
+                    }
+                    return task;
+                }));
+            };
 
-                    return `
-                        <div class="glass p-6 md:p-8 rounded-2xl">
-                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-6">
-                                <div>
-                                    <h3 class="text-xl font-bold text-white">${site.title}</h3>
-                                    <a href="${site.url}" target="_blank" class="text-xs text-indigo-400 hover:underline">${site.url}</a>
-                                </div>
-                                <span class="text-xs font-semibold bg-emerald-400/10 text-emerald-300 border border-emerald-500/20 px-3 py-1 rounded-full">Scraped</span>
-                            </div>
-                            <div class="space-y-3">
-                                <h4 class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-2">Captured Headings</h4>
-                                ${headingsHtml}
-                            </div>
+            const isOverdue = (date) => {
+                return new Date(date) < new Date() && date !== 'done';
+            };
+
+            return (
+                <div className="p-8 max-w-7xl mx-auto">
+                    <header className="mb-8 flex justify-between items-center">
+                        <h1 className="text-3xl font-bold text-white">OpenClaw Kanban</h1>
+                        <div className="flex -space-x-2">
+                            {INITIAL_MEMBERS.map(m => (
+                                <img key={m.id} src={m.avatar} title={m.name} className="w-8 h-8 rounded-full border-2 border-slate-800" />
+                            ))}
                         </div>
-                    `;
-                }).join('');
-            } catch (err) {
-                document.getElementById('results-section').innerHTML = `
-                    <div class="glass p-8 rounded-2xl border-red-500/20 text-center text-red-400">
-                        Error loading results. Make sure scrape_results.json exists.
+                    </header>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {COLUMNS.map(col => (
+                            <div key={col.id} className="kanban-column p-4 flex flex-col">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <div className={`w-3 h-3 rounded-full ${col.color}`}></div>
+                                    <h2 className="text-lg font-semibold text-slate-300">{col.title}</h2>
+                                    <span className="ml-auto text-sm text-slate-500">{tasks.filter(t => t.status === col.id).length}</span>
+                                </div>
+
+                                <div className="space-y-3 flex-1">
+                                    {tasks.filter(t => t.status === col.id).map(task => {
+                                        const member = INITIAL_MEMBERS.find(m => m.id === task.memberId);
+                                        const overdue = isOverdue(task.dueDate) && task.status !== 'done';
+                                        
+                                        return (
+                                            <div 
+                                                key={task.id} 
+                                                onClick={() => moveTask(task.id)}
+                                                className="card p-4 rounded-lg shadow-sm border border-slate-700 group relative"
+                                            >
+                                                <div className="flex justify-between items-start mb-2">
+                                                    <h3 className="font-medium text-slate-100">{task.title}</h3>
+                                                    {overdue && (
+                                                        <span className="overdue-badge px-2 py-0.5 rounded-full text-[10px] font-bold uppercase">Overdue</span>
+                                                    )}
+                                                </div>
+                                                <p className="text-sm text-slate-400 mb-4">{task.desc}</p>
+                                                <div className="flex justify-between items-center">
+                                                    <span className="text-xs text-slate-500">{task.dueDate}</span>
+                                                    <img src={member?.avatar} className="w-6 h-6 rounded-full" />
+                                                </div>
+                                                <div className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity text-slate-500">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                `;
-            }
-        });
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<KanbanBoard />);
     </script>
 </body>
 </html>
