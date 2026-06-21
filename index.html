@@ -26,6 +26,9 @@
     </div>
 
     <script>
+        // Configurable API Base URL
+        const API_BASE_URL = 'http://localhost:8000/api';
+
         const INITIAL_MEMBERS = [
             { id: 1, name: 'Yatharth', avatar: 'https://i.pravatar.cc/150?u=1' },
             { id: 2, name: 'Alex', avatar: 'https://i.pravatar.cc/150?u=2' },
@@ -39,7 +42,7 @@
             'Other': 'bg-slate-500 text-slate-100'
         };
 
-        let tasks = [
+        const MOCK_TASKS = [
             { id: 't1', title: 'Setup Project Structure', desc: 'Define folder hierarchy and config', status: 'done', dueDate: '2026-06-01', memberId: 1, tag: 'Feature' },
             { id: 't2', title: 'Build API Endpoints', desc: 'Implement CRUD for tasks', status: 'doing', dueDate: '2026-06-25', memberId: 2, tag: 'Feature' },
             { id: 't3', title: 'Kanban UI Implementation', desc: 'React frontend for board', status: 'todo', dueDate: '2026-06-22', memberId: 3, tag: 'Design' },
@@ -52,19 +55,72 @@
             { id: 'done', title: 'Done', color: 'bg-green-500' },
         ];
 
-        function isOverdue(date) {
-            return new Date(date) < new Date();
+        let tasks = [];
+
+        async function apiFetch(endpoint, options = {}) {
+            try {
+                const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+                    ...options,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    }
+                });
+                if (!response.ok) throw new Error('API response not ok');
+                return await response.json();
+            } catch (error) {
+                console.warn(`API call to ${endpoint} failed: ${error.message}. Falling back to mock data.`);
+                return null;
+            }
         }
 
-        function moveTask(taskId) {
-            tasks = tasks.map(task => {
-                if (task.id === taskId) {
-                    const nextStatus = { todo: 'doing', doing: 'done', done: 'todo' }[task.status];
-                    return { ...task, status: nextStatus };
-                }
-                return task;
-            });
+        async function loadTasks() {
+            const data = await apiFetch('/tasks');
+            tasks = data || [...MOCK_TASKS];
             render();
+        }
+
+        async function moveTask(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+
+            const nextStatus = { todo: 'doing', doing: 'done', done: 'todo' }[task.status];
+            
+            // Optimistic Update
+            const oldStatus = task.status;
+            task.status = nextStatus;
+            render();
+
+            const updated = await apiFetch(`/tasks/${taskId}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ status: nextStatus })
+            });
+
+            if (updated === null) {
+                // If API fails, we keep the optimistic change but log it. 
+                // In a real app, we might revert to oldStatus.
+                console.error('Failed to update task status on server.');
+            }
+        }
+
+        async function addTask(title, desc, memberId, tag) {
+            const newTask = { title, desc, memberId, tag, status: 'todo', dueDate: new Date().toISOString().split('T')[0] };
+            const created = await apiFetch('/tasks', {
+                method: 'POST',
+                body: JSON.stringify(newTask)
+            });
+
+            if (created) {
+                tasks.push(created);
+            } else {
+                const mockId = 't' + (tasks.length + 1);
+                tasks.push({ ...newTask, id: mockId });
+            }
+            render();
+        }
+
+        function isOverdue(date) {
+            return new Date(date) < new Date();
         }
 
         function render() {
@@ -120,8 +176,8 @@
             }).join('');
         }
 
-        // Initial render
-        render();
+        // Initial load
+        loadTasks();
     </script>
 </body>
 </html>
