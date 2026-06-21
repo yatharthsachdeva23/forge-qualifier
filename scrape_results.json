@@ -1,8 +1,7 @@
 [
     {
         "url": "https://news.ycombinator.com",
-        "title": "Hacker News",
-        "headings": []
+        "error": "429 Client Error: Too Many Requests for url: https://news.ycombinator.com/"
     },
     {
         "url": "https://python.org",
@@ -63,6 +62,128 @@
             {
                 "tag": "h2",
                 "text": ">>>Python Software Foundation"
+            }
+        ],
+        "links": [
+            {
+                "text": "PSF",
+                "href": "https://www.python.org/psf/"
+            },
+            {
+                "text": "Docs",
+                "href": "https://docs.python.org"
+            },
+            {
+                "text": "PyPI",
+                "href": "https://pypi.org/"
+            },
+            {
+                "text": "Donate",
+                "href": "https://donate.python.org/"
+            },
+            {
+                "text": "LinkedIn",
+                "href": "https://www.linkedin.com/company/python-software-foundation/"
+            },
+            {
+                "text": "Mastodon",
+                "href": "https://fosstodon.org/@ThePSF"
+            },
+            {
+                "text": "Twitter",
+                "href": "https://twitter.com/ThePSF"
+            },
+            {
+                "text": "Python Brochure",
+                "href": "http://brochure.getpython.info/"
+            },
+            {
+                "text": "License",
+                "href": "https://docs.python.org/3/license.html"
+            },
+            {
+                "text": "Beginner's Guide",
+                "href": "https://wiki.python.org/moin/BeginnersGuide"
+            },
+            {
+                "text": "FAQ",
+                "href": "https://docs.python.org/3/faq/"
+            },
+            {
+                "text": "Non-English Docs",
+                "href": "https://translations.python.org/"
+            },
+            {
+                "text": "PEP Index",
+                "href": "https://peps.python.org"
+            },
+            {
+                "text": "Python Books",
+                "href": "https://wiki.python.org/moin/PythonBooks"
+            },
+            {
+                "text": "Python Wiki",
+                "href": "https://wiki.python.org/moin/"
+            },
+            {
+                "text": "PSF News",
+                "href": "http://pyfound.blogspot.com/"
+            },
+            {
+                "text": "PyCon US News",
+                "href": "http://pycon.blogspot.com/"
+            },
+            {
+                "text": "News from the Community",
+                "href": "http://planetpython.org/"
+            },
+            {
+                "text": "Submit an Event",
+                "href": "https://wiki.python.org/moin/PythonEventsCalendar#Submitting_an_Event"
+            },
+            {
+                "text": "More about simple math functions in Python 3",
+                "href": "http://docs.python.org/3/tutorial/introduction.html#using-python-as-a-calculator"
+            },
+            {
+                "text": "docs.python.org",
+                "href": "https://docs.python.org"
+            },
+            {
+                "text": "More",
+                "href": "https://blog.python.org"
+            },
+            {
+                "text": "PSF Board Election Dates for 2026",
+                "href": "https://pyfound.blogspot.com/2026/06/psf-board-election-dates-for-2026.html"
+            },
+            {
+                "text": "Everything Security at PyCon US 2026",
+                "href": "https://pyfound.blogspot.com/2026/06/everything-security-at-pycon-us-2026.html"
+            },
+            {
+                "text": "Python 3.14.6 and 3.13.14 are now available!",
+                "href": "https://blog.python.org/2026/06/python-3146-31314/"
+            },
+            {
+                "text": "PSF Strategic Plan 2026 Draft: Open for Community Feedback",
+                "href": "https://pyfound.blogspot.com/2026/06/psf-strategic-plan-2026-draft-open-for.html"
+            },
+            {
+                "text": "No Starch Press Humble Bundle: Grab a Deal and Support the PSF!",
+                "href": "https://pyfound.blogspot.com/2026/06/no-starch-press-humble-bundle-grab-deal.html"
+            },
+            {
+                "text": "Django",
+                "href": "https://www.djangoproject.com/"
+            },
+            {
+                "text": "Pyramid",
+                "href": "https://trypyramid.com/"
+            },
+            {
+                "text": "Bottle",
+                "href": "https://bottlepy.org"
             }
         ]
     },
@@ -189,6 +310,128 @@
             {
                 "tag": "h3",
                 "text": "Company"
+            }
+        ],
+        "links": [
+            {
+                "text": "GitHub CopilotWrite better code with AI",
+                "href": "https://github.com/features/copilot"
+            },
+            {
+                "text": "GitHub Copilot appDirect agents from issue to merge",
+                "href": "https://github.com/features/ai/github-app"
+            },
+            {
+                "text": "MCP RegistryNewIntegrate external tools",
+                "href": "https://github.com/mcp"
+            },
+            {
+                "text": "ActionsAutomate any workflow",
+                "href": "https://github.com/features/actions"
+            },
+            {
+                "text": "CodespacesInstant dev environments",
+                "href": "https://github.com/features/codespaces"
+            },
+            {
+                "text": "IssuesPlan and track work",
+                "href": "https://github.com/features/issues"
+            },
+            {
+                "text": "Code ReviewManage code changes",
+                "href": "https://github.com/features/code-review"
+            },
+            {
+                "text": "GitHub Advanced SecurityFind and fix vulnerabilities",
+                "href": "https://github.com/security/advanced-security"
+            },
+            {
+                "text": "Code securitySecure your code as you build",
+                "href": "https://github.com/security/advanced-security/code-security"
+            },
+            {
+                "text": "Secret protectionStop leaks before they start",
+                "href": "https://github.com/security/advanced-security/secret-protection"
+            },
+            {
+                "text": "Why GitHub",
+                "href": "https://github.com/why-github"
+            },
+            {
+                "text": "Documentation",
+                "href": "https://docs.github.com"
+            },
+            {
+                "text": "Blog",
+                "href": "https://github.blog"
+            },
+            {
+                "text": "Changelog",
+                "href": "https://github.blog/changelog"
+            },
+            {
+                "text": "Marketplace",
+                "href": "https://github.com/marketplace"
+            },
+            {
+                "text": "View all features",
+                "href": "https://github.com/features"
+            },
+            {
+                "text": "Enterprises",
+                "href": "https://github.com/enterprise"
+            },
+            {
+                "text": "Small and medium teams",
+                "href": "https://github.com/team"
+            },
+            {
+                "text": "Startups",
+                "href": "https://github.com/enterprise/startups"
+            },
+            {
+                "text": "Nonprofits",
+                "href": "https://github.com/solutions/industry/nonprofits"
+            },
+            {
+                "text": "App Modernization",
+                "href": "https://github.com/solutions/use-case/app-modernization"
+            },
+            {
+                "text": "DevSecOps",
+                "href": "https://github.com/solutions/use-case/devsecops"
+            },
+            {
+                "text": "DevOps",
+                "href": "https://github.com/solutions/use-case/devops"
+            },
+            {
+                "text": "CI/CD",
+                "href": "https://github.com/solutions/use-case/ci-cd"
+            },
+            {
+                "text": "View all use cases",
+                "href": "https://github.com/solutions/use-case"
+            },
+            {
+                "text": "Healthcare",
+                "href": "https://github.com/solutions/industry/healthcare"
+            },
+            {
+                "text": "Financial services",
+                "href": "https://github.com/solutions/industry/financial-services"
+            },
+            {
+                "text": "Manufacturing",
+                "href": "https://github.com/solutions/industry/manufacturing"
+            },
+            {
+                "text": "Government",
+                "href": "https://github.com/solutions/industry/government"
+            },
+            {
+                "text": "View all industries",
+                "href": "https://github.com/solutions/industry"
             }
         ]
     }
