@@ -1,7 +1,7 @@
 import axios from 'axios';
 import mockData from '../mockData.json';
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = 'https://forge-qualifier-production.up.railway.app/api';
 
 export const apiService = {
   async getBoard() {
