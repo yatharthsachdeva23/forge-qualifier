@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CardController;
+use App\Http\Controllers\KanbanController;
 
-Route::get('/cards', [CardController::class, 'index']);
-Route::post('/cards', [CardController::class, 'store']);
-Route::put('/cards/{id}', [CardController::class, 'update']);
-Route::delete('/cards/{id}', [CardController::class, 'destroy']);
+Route::get('/board', [KanbanController::class, 'getBoard']);
+Route::post('/cards', [KanbanController::class, 'storeCard']);
+Route::patch('/cards/{id}', [KanbanController::class, 'updateCard']);

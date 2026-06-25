@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Card extends Model
 {
-    protected $fillable = ['board_list_id', 'title', 'description', 'status', 'tag', 'member', 'due_date'];
+    protected $fillable = ['list_id', 'title', 'description', 'tag', 'member_id', 'due_date', 'position'];
 
-    public function list()
+    public function list(): BelongsTo
     {
-        return $this->belongsTo(BoardList::class, 'board_list_id');
+        return $this->belongsTo(KanbanList::class, 'list_id');
     }
 }
