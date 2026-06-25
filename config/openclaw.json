@@ -1,6 +1,300 @@
 {
-  "slack_bot_token": "YOUR_SLACK_BOT_TOKEN",
-  "slack_app_token": "YOUR_SLACK_APP_TOKEN",
-  "model_api_key": "YOUR_MODEL_API_KEY",
-  "workspace_id": "YOUR_WORKSPACE_ID"
+  "agents": {
+    "defaults": {
+      "workspace": "C:\\Desktop\\forge-sprint-02 qualifier",
+      "model": {
+        "primary": "ollama-cloud/gemma4:31b",
+        "fallbacks": []
+      }
+    }
+  },
+  "gateway": {
+    "mode": "local",
+    "auth": {
+      "mode": "token",
+      "token": "YOUR_GATEWAY_AUTH_TOKEN"
+    },
+    "port": 18789,
+    "bind": "loopback",
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    },
+    "controlUi": {
+      "allowInsecureAuth": true
+    },
+    "nodes": {
+      "denyCommands": [
+        "camera.snap",
+        "camera.clip",
+        "screen.record",
+        "contacts.add",
+        "calendar.add",
+        "reminders.add",
+        "sms.send",
+        "sms.search"
+      ]
+    }
+  },
+  "session": {
+    "dmScope": "per-channel-peer"
+  },
+  "tools": {
+    "profile": "coding",
+    "web": {
+      "search": {
+        "provider": "gemini",
+        "enabled": true
+      }
+    }
+  },
+  "plugins": {
+    "entries": {
+      "google": {
+        "enabled": true,
+        "config": {
+          "webSearch": {
+            "apiKey": "YOUR_GOOGLE_SEARCH_API_KEY"
+          }
+        }
+      },
+      "discord": {
+        "enabled": true
+      },
+      "openai": {
+        "enabled": true
+      },
+      "openrouter": {
+        "enabled": true
+      },
+      "slack": {
+        "enabled": true
+      }
+    }
+  },
+  "auth": {
+    "profiles": {
+      "google:default": {
+        "provider": "google",
+        "mode": "api_key"
+      },
+      "openai:api-key": {
+        "provider": "openai",
+        "mode": "api_key"
+      }
+    }
+  },
+  "channels": {
+    "defaults": {
+      "botLoopProtection": {
+        "enabled": false
+      }
+    },
+    "slack": {
+      "enabled": true,
+      "botToken": "YOUR_SLACK_BOT_TOKEN",
+      "appToken": "YOUR_SLACK_APP_TOKEN",
+      "groupPolicy": "open",
+      "dmPolicy": "open",
+      "allowFrom": ["*"],
+      "allowBots": true,
+      "botLoopProtection": {
+        "enabled": false
+      },
+      "channels": {
+        "C0BCW73Q4P2": {
+          "enabled": true
+        },
+        "C0BBLE4JETH": {
+          "enabled": true
+        },
+        "C0BC1UC5RA6": {
+          "enabled": true
+        },
+        "C0BC5HHG6BW": {
+          "enabled": true
+        },
+        "C0BBYGHUN4D": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "wizard": {
+    "lastRunAt": "2026-06-21T06:08:35.604Z",
+    "lastRunVersion": "2026.6.9",
+    "lastRunCommand": "configure",
+    "lastRunMode": "local"
+  },
+  "meta": {
+    "lastTouchedVersion": "2026.6.9",
+    "lastTouchedAt": "2026-06-21T10:19:58.819Z"
+  },
+  "models": {
+    "providers": {
+      "ollama-cloud": {
+        "api": "openai-chatgpt-responses",
+        "baseUrl": "https://ollama.com/v1",
+        "apiKey": "YOUR_OLLAMA_API_KEY",
+        "models": [
+          {
+            "id": "gemma4:31b",
+            "name": "Gemma 4"
+          }
+        ]
+      },
+      "google": {
+        "api": "openai-chatgpt-responses",
+        "baseUrl": "https://generativelanguage.googleapis.com/v1beta/openai/",
+        "apiKey": "YOUR_GOOGLE_GENERATIVE_API_KEY",
+        "models": [
+          {
+            "id": "gemini-2.5-flash",
+            "name": "Gemini 2.5 Flash"
+          }
+        ]
+      },
+      "openrouter": {
+        "api": "openai-chatgpt-responses",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "apiKey": "YOUR_OPENROUTER_API_KEY",
+        "models": [
+          {
+            "id": "google/gemma-4-31b-it:free",
+            "name": "Gemma 4 31B Free"
+          },
+          {
+            "id": "cohere/north-mini-code:free",
+            "name": "Cohere North Mini Code Free"
+          },
+          {
+            "id": "google/gemini-2.5-flash:free",
+            "name": "Gemini 2.5 Flash Free"
+          },
+          {
+            "id": "meta-llama/llama-3.3-70b-instruct:free",
+            "name": "Llama 3.3 70B Instruct Free"
+          },
+          {
+            "id": "qwen/qwen-2.5-coder-32b-instruct:free",
+            "name": "Qwen 2.5 Coder 32B Instruct Free"
+          },
+          {
+            "id": "qwen/qwen3-coder:free",
+            "name": "Qwen3 Coder Free"
+          },
+          {
+            "id": "meta-llama/llama-3.2-3b-instruct:free",
+            "name": "Llama 3.2 3B Instruct Free"
+          }
+        ]
+      }
+    }
+  },
+  "skills": {
+    "entries": {
+      "1password": {
+        "enabled": false
+      },
+      "blogwatcher": {
+        "enabled": false
+      },
+      "blucli": {
+        "enabled": false
+      },
+      "camsnap": {
+        "enabled": false
+      },
+      "clawhub": {
+        "enabled": false
+      },
+      "coding-agent": {
+        "enabled": false
+      },
+      "eightctl": {
+        "enabled": false
+      },
+      "gemini": {
+        "enabled": false
+      },
+      "gh-issues": {
+        "enabled": false
+      },
+      "gifgrep": {
+        "enabled": false
+      },
+      "github": {
+        "enabled": false
+      },
+      "gog": {
+        "enabled": false
+      },
+      "goplaces": {
+        "enabled": false
+      },
+      "himalaya": {
+        "enabled": false
+      },
+      "mcporter": {
+        "enabled": false
+      },
+      "nano-pdf": {
+        "enabled": false
+      },
+      "obsidian": {
+        "enabled": false
+      },
+      "openai-whisper": {
+        "enabled": false
+      },
+      "openai-whisper-api": {
+        "enabled": false
+      },
+      "openhue": {
+        "enabled": false
+      },
+      "oracle": {
+        "enabled": false
+      },
+      "ordercli": {
+        "enabled": false
+      },
+      "sag": {
+        "enabled": false
+      },
+      "session-logs": {
+        "enabled": false
+      },
+      "sherpa-onnx-tts": {
+        "enabled": false
+      },
+      "slack": {
+        "enabled": false
+      },
+      "songsee": {
+        "enabled": false
+      },
+      "sonoscli": {
+        "enabled": false
+      },
+      "spotify-player": {
+        "enabled": false
+      },
+      "summarize": {
+        "enabled": false
+      },
+      "trello": {
+        "enabled": false
+      },
+      "voice-call": {
+        "enabled": false
+      },
+      "wacli": {
+        "enabled": false
+      },
+      "xurl": {
+        "enabled": false
+      }
+    }
+  }
 }
