@@ -65,7 +65,7 @@ const KanbanBoard = () => {
     setNewCard({ title: '', description: '', tag: 'Feature', member_id: 'Guest', due_date: '' });
 
     try {
-      await apiService.updateCard(null, cardPayload); 
+      await apiService.createCard(cardPayload); 
     } catch (err) {
       console.error("Failed to sync new card with backend");
     }

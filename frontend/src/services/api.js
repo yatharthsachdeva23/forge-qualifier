@@ -22,5 +22,15 @@ export const apiService = {
       console.error("Failed to update card on server, but UI was updated optimistically.");
       throw error;
     }
+  },
+  
+  async createCard(cardPayload) {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/cards`, cardPayload);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to create card on server.", error);
+      throw error;
+    }
   }
 };
