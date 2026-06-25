@@ -159,7 +159,7 @@ const KanbanBoard = () => {
                   className="p-2 border rounded-lg" 
                   onChange={e => setNewCard({...newCard, due_date: e.target.value})} 
                 />
-              </div
+              </div>
               <input 
                 className="w-full p-2 border rounded-lg" 
                 placeholder="Member ID (e.g. John)" 
