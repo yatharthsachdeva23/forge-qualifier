@@ -30,3 +30,4 @@
 - [x] Updated `README.md` and `ARCHITECTURE.md`
 - [x] Complete `agent-log.md` transcript
 - [x] Screenshots in `/screenshots` folder
+- [x] Slack history export in `/slack-export` folder
