@@ -1,7 +1,7 @@
 import React from 'react';
 import { apiService } from '../services/api';
 
-export const moveCard = async (cardId, sourceListId, destListId, board) => {
+export const moveCard = async (cardId, sourceListId, destListId, board, destIndex) => {
   // 1. Optimistic UI Update
   const updatedBoard = { ...board };
   const sourceList = updatedBoard.lists.find(l => l.id === sourceListId);
@@ -12,7 +12,7 @@ export const moveCard = async (cardId, sourceListId, destListId, board) => {
   
   // Update the list_id on the card object
   movedCard.list_id = destListId;
-  destList.cards.push(movedCard);
+  destList.cards.splice(destIndex, 0, movedCard);
 
   return updatedBoard;
 };

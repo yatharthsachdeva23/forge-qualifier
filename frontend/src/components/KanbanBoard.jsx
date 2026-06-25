@@ -38,7 +38,7 @@ const KanbanBoard = () => {
 
     // --- OPTIMISTIC UPDATE ---
     const previousBoardState = JSON.parse(JSON.stringify(board));
-    const updatedBoard = await moveCard(cardId, sourceListId, destListId, board);
+    const updatedBoard = await moveCard(cardId, sourceListId, destListId, board, destination.index);
     setBoard(updatedBoard);
 
     try {
