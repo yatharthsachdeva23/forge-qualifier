@@ -1,0 +1,6 @@
+{
+  "agent_id": "hermes-01",
+  "version": "2.0.0",
+  "api_key": "YOUR_HERMES_API_KEY",
+  "endpoint": "https://api.hermes.ai/v1"
+}
