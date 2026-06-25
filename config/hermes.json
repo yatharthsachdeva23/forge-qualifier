@@ -1,6 +1,57 @@
 {
-  "agent_id": "hermes-01",
-  "version": "2.0.0",
-  "api_key": "YOUR_HERMES_API_KEY",
-  "endpoint": "https://api.hermes.ai/v1"
+  "agent": {
+    "id": "hermes-orchestrator",
+    "version": "2026.6.9",
+    "role": "Brain / Orchestrator",
+    "vibe": "Collaborative, structured",
+    "timezone": "UTC+5:30"
+  },
+  "model_routing": {
+    "primary": "ollama-cloud/gemma4:31b",
+    "fallbacks": [
+      "google/gemini-2.5-flash:free",
+      "openrouter/google/gemma-4-31b-it:free"
+    ],
+    "providers": {
+      "ollama-cloud": {
+        "baseUrl": "https://ollama.com/v1",
+        "apiKey": "YOUR_OLLAMA_API_KEY"
+      },
+      "google": {
+        "baseUrl": "https://generativelanguage.googleapis.com/v1beta/openai/",
+        "apiKey": "YOUR_GOOGLE_API_KEY"
+      },
+      "openrouter": {
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "apiKey": "YOUR_OPENROUTER_API_KEY"
+      }
+    }
+  },
+  "communication": {
+    "slack": {
+      "channels": [
+        "C0BCW73Q4P2",
+        "C0BBLE4JETH",
+        "C0BC1UC5RA6",
+        "C0BC5HHG6BW",
+        "C0BBYGHUN4D"
+      ],
+      "groupPolicy": "open",
+      "dmPolicy": "open",
+      "allowBots": true,
+      "botLoopProtection": false
+    }
+  },
+  "scheduled_tasks": {
+    "heartbeat_interval": "*/30 * * * *",
+    "heartbeat_tasks": [
+      "Check unread Slack DMs & group mentions",
+      "Sync local daily logs YYYY-MM-DD.md to MEMORY.md",
+      "Validate git status and scan repository layout"
+    ],
+    "git_auto_push": {
+      "cron": "*/5 * * * *",
+      "task": "Automatically stage, commit, and push frontend/backend changes to origin/main"
+    }
+  }
 }
