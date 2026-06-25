@@ -1,0 +1,31 @@
+{
+  "id": 1,
+  "name": "Mock Board",
+  "lists": [
+    {
+      "id": 1,
+      "name": "To-Do",
+      "position": 1,
+      "cards": [
+        { "id": 101, "title": "Setup Project", "description": "Install dependencies", "tag": "Feature", "member_id": "U1", "due_date": "2026-07-01", "position": 1 },
+        { "id": 102, "title": "Configure API", "description": "Set up Axios", "tag": "Design", "member_id": "U2", "due_date": "2026-06-30", "position": 2 }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Doing",
+      "position": 2,
+      "cards": [
+        { "id": 201, "title": "Implement Layout", "description": "Grid columns", "tag": "Feature", "member_id": "U1", "due_date": "2026-06-26", "position": 1 }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Done",
+      "position": 3,
+      "cards": [
+        { "id": 301, "title": "Init Git", "description": "First commit", "tag": "Other", "member_id": "U3", "due_date": "2026-06-20", "position": 1 }
+      ]
+    }
+  ]
+}
